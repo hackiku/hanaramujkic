@@ -1,0 +1,48 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "name": "Hamlet Reimagined",
+      "company": "Royal Shakespeare Company",
+      "tags": [
+        "Stage Design",
+        "Lighting Design"
+      ],
+      "color": "bg-blue-500",
+      "image": "/portfolio/test.jpg"
+    },
+    {
+      "id": "2",
+      "name": "The Nutcracker",
+      "company": "Bolshoi Ballet",
+      "tags": [
+        "Set Design",
+        "Costume Design"
+      ],
+      "color": "bg-red-500",
+      "image": "/portfolio/test.jpg"
+    },
+    {
+      "id": "3",
+      "name": "Cyberpunk Opera",
+      "company": "Berlin State Opera",
+      "tags": [
+        "Stage Design",
+        "Projection Mapping"
+      ],
+      "color": "bg-purple-500",
+      "image": "/portfolio/test.jpg"
+    },
+    {
+      "name": "hanchy",
+      "company": "disney",
+      "tags": [
+        "cao",
+        "gheh"
+      ],
+      "color": "bg-indigo-300",
+      "image": "https://www.christophgehre.de/wp-content/uploads/2022/01/Christoph-Gehre_Buehnenbild_Kostuembild_Mario-und-der-Zauberer_Oper-Graz_2.jpg",
+      "id": "1724430407605"
+    }
+  ]
+}

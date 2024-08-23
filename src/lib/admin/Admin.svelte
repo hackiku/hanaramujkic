@@ -1,6 +1,7 @@
 <!-- $lib/admin/Admin.svelte -->
 
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { Button } from "$lib/components/ui/button";
   import { Input } from "$lib/components/ui/input";
   import { Label } from "$lib/components/ui/label";
@@ -15,6 +16,13 @@
   };
 
   let imagePreview: string | null = null;
+  let projects = [];
+
+  onMount(async () => {
+    const response = await fetch('/api/projects');
+    const data = await response.json();
+    projects = data.projects;
+  });
 
   function handleImageUpload(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -24,14 +32,33 @@
     }
   }
 
-  function handleSubmit() {
-    // Here you would typically send the data to your backend
-    console.log('Submitting project data:', projectData);
-    // Reset form after submission
-    projectData = { name: '', company: '', tags: '', color: '', image: null };
-    imagePreview = null;
+  async function handleSubmit() {
+    const formData = new FormData();
+    formData.append('name', projectData.name);
+    formData.append('company', projectData.company);
+    formData.append('tags', projectData.tags);
+    formData.append('color', projectData.color);
+    if (projectData.image) {
+      formData.append('image', projectData.image);
+    }
+
+    const response = await fetch('/api/projects', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      projects = [...projects, result.project];
+      // Reset form after successful submission
+      projectData = { name: '', company: '', tags: '', color: '', image: null };
+      imagePreview = null;
+    } else {
+      console.error('Failed to save project');
+    }
   }
 </script>
+
 
 <div class="container mx-auto px-4 py-8">
   <h1 class="text-3xl font-bold mb-8">Add New Project</h1>

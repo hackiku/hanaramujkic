@@ -1,4 +1,5 @@
 <!-- $lib/components/Portfolio.svelte -->
+
 <script lang="ts">
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
@@ -12,34 +13,14 @@
     color: string;
   }
 
-  let projects: Project[] = [
-    {
-      id: '1',
-      name: 'Project 1',
-      company: 'Theater Company A',
-      tags: ['Stage Design', 'Costume Design'],
-      image: '/placeholder1.jpg',
-      color: 'bg-red-500'
-    },
-    {
-      id: '2',
-      name: 'Project 2',
-      company: 'Opera House B',
-      tags: ['Lighting Design', 'Set Design'],
-      image: '/placeholder2.jpg',
-      color: 'bg-blue-500'
-    },
-    // Add more projects as needed
-  ];
-
+  let projects: Project[] = [];
   let container: HTMLElement;
 
-  onMount(() => {
-    const resizeObserver = new ResizeObserver(() => {
-      adjustMasonry();
-    });
-    resizeObserver.observe(container);
-    return () => resizeObserver.disconnect();
+  onMount(async () => {
+    const response = await fetch('/api/projects');
+    const data = await response.json();
+    projects = data.projects;
+    adjustMasonry();
   });
 
   function adjustMasonry() {

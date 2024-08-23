@@ -8,10 +8,10 @@
   let isOpen = false;
 
   const menuItems = [
-    { label: 'Scenography', href: '/' },
+    { label: 'Work', href: '/' },
     { label: 'CV', href: '/cv' },
     { label: 'Contact', href: '/contact' },
-    { label: 'Office for World Design', href: 'https://officeforworlddesign.com' }
+    { label: 'Admin', href: '/admin' }
   ];
 
   function toggleMenu() {

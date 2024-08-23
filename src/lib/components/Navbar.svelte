@@ -1,14 +1,25 @@
 <!-- $lib/components/Navbar.svelte -->
-
 <script lang="ts">
   import { Sun, Moon } from "lucide-svelte";
   import { toggleMode } from "mode-watcher";
   import { Button } from "$lib/components/ui/button";
   import Menu from "$lib/components/Menu.svelte";
+  import { onMount } from 'svelte';
 
+  let darkMode = false;
+
+  onMount(() => {
+    const updateDarkMode = () => {
+      darkMode = document.documentElement.classList.contains('dark');
+    };
+    updateDarkMode();
+    const observer = new MutationObserver(updateDarkMode);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  });
 </script>
 
-<nav class="flex justify-between items-center px-24 py-4">
+<nav class="flex justify-between items-center px-8 md:px-24 py-4">
   <button class="text-xl font-semibold">HR</button>
   <div class="flex items-center space-x-2">
     <Button on:click={toggleMode} variant="ghost" size="icon">
@@ -20,6 +31,6 @@
       />
       <span class="sr-only">Toggle theme</span>
     </Button>
-    <Menu />
+    <Menu {darkMode} />
   </div>
 </nav>

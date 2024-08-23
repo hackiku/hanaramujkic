@@ -1,37 +1,18 @@
 <!-- $lib/components/Portfolio.svelte -->
 
 <script lang="ts">
-  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
 
-  interface Project {
-    id: string;
-    name: string;
-    company: string;
-    tags: string[];
-    image: string;
-    color: string;
-  }
+  export let projects = [];
+  let visibleProjects = 8;
 
-  let projects: Project[] = [];
-  let container: HTMLElement;
+  $: gridItems = projects.slice(0, visibleProjects);
 
-  onMount(async () => {
-    const response = await fetch('/api/projects');
-    const data = await response.json();
-    projects = data.projects;
-    adjustMasonry();
-  });
-
-  function adjustMasonry() {
-    const items = container.querySelectorAll('.masonry-item');
-    let columns = 3;
-    if (window.innerWidth < 768) columns = 1;
-    else if (window.innerWidth < 1024) columns = 2;
-
-    items.forEach((item: HTMLElement, i) => {
-      item.style.gridRowEnd = `span ${Math.ceil(item.getBoundingClientRect().height / 10)}`;
-    });
+  function showMore() {
+    visibleProjects += 8;
+    if (visibleProjects > projects.length) {
+      visibleProjects = projects.length;
+    }
   }
 
   function handleImageError(event: Event) {
@@ -41,20 +22,20 @@
   }
 </script>
 
-<div bind:this={container} class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[10px]">
-  {#each projects as project (project.id)}
-    <div class="masonry-item relative overflow-hidden" transition:fade>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  {#each gridItems as project (project.id)}
+    <div class="relative overflow-hidden rounded-lg shadow-md group" transition:fade>
       <img
         src={project.image}
         alt={project.name}
-        class="w-full h-auto object-cover"
+        class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
         on:error={handleImageError}
       />
       <div class="hidden bg-gray-500 w-full h-full absolute inset-0"></div>
-      <div class="absolute inset-0 flex flex-col justify-end p-4 bg-opacity-0 hover:bg-opacity-75 transition-all duration-300 {project.color}">
-        <h3 class="text-white text-xl font-bold">{project.name}</h3>
-        <p class="text-white">{project.company}</p>
-        <div class="flex flex-wrap mt-2">
+      <div class="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-0 group-hover:bg-opacity-75 transition-all duration-300">
+        <h3 class="text-white text-xl font-bold transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">{project.name}</h3>
+        <p class="text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 delay-75">{project.company}</p>
+        <div class="flex flex-wrap mt-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 delay-100">
           {#each project.tags as tag}
             <span class="bg-white text-black text-xs px-2 py-1 rounded-full mr-2 mb-2">{tag}</span>
           {/each}
@@ -64,9 +45,13 @@
   {/each}
 </div>
 
-<style>
-  .masonry-item {
-    break-inside: avoid;
-    margin-bottom: 16px;
-  }
-</style>
+{#if visibleProjects < projects.length}
+  <div class="mt-8 text-center">
+    <button
+      on:click={showMore}
+      class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors duration-300"
+    >
+      Show More
+    </button>
+  </div>
+{/if}

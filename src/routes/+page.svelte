@@ -1,15 +1,24 @@
 <!-- routes/+page.svelte -->
 
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { Sun, Moon } from "lucide-svelte";
   import { toggleMode } from "mode-watcher";
   import { Button } from "$lib/components/ui/button";
   import Portfolio from "$lib/components/Portfolio.svelte";
   import Menu from "$lib/components/Menu.svelte";
+
+  let projects = [];
+
+  onMount(async () => {
+    const response = await fetch('/api/projects');
+    const data = await response.json();
+    projects = data.projects;
+  });
 </script>
 
 <nav class="flex justify-between items-center px-24 py-4">
-  <button class="text-xl font-semibold">CHRISTOPH GEHRE</button>
+  <button class="text-xl font-semibold">HR</button>
   <div class="flex items-center space-x-2">
     <Button on:click={toggleMode} variant="outline" size="icon">
       <Sun
@@ -27,7 +36,11 @@
 <main class="px-24 py-8">
   <h1 class="text-6xl font-bold mb-4">SCENOGRAPHY</h1>
   <hr class="border-t-4 border-black dark:border-white w-full mb-8" />
-  <Portfolio />
+  {#if projects.length > 0}
+    <Portfolio {projects} />
+  {:else}
+    <p>Loading projects...</p>
+  {/if}
 </main>
 
 <footer class="bg-black text-white py-12 px-24">

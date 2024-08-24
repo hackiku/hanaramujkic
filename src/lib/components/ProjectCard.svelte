@@ -6,23 +6,29 @@
     company: string;
     image: string;
     tags: string[];
+    color?: string;
   };
 
-  function handleImageError(event: Event) {
-    const img = event.target as HTMLImageElement;
-    img.style.display = 'none';
-    img.nextElementSibling.classList.remove('hidden');
+  let imageError = false;
+
+  function handleImageError() {
+    imageError = true;
   }
 </script>
 
 <div class="relative h-64 md:h-full overflow-hidden group">
-  <img
-    src={project.image}
-    alt={project.name}
-    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-    on:error={handleImageError}
-  />
-  <div class="hidden bg-gray-500 w-full h-full absolute inset-0"></div>
+  {#if !imageError}
+    <img
+      src={project.image}
+      alt={project.name}
+      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+      on:error={handleImageError}
+    />
+  {:else}
+    <div class="w-full h-full bg-gray-300 flex items-center justify-center">
+      <span class="text-gray-500">Image not available</span>
+    </div>
+  {/if}
   <div class="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-0 group-hover:bg-opacity-75 transition-all duration-300">
     <div class="transform group-hover:translate-y-0 transition-all duration-300">
       <h3 class="text-white text-sm md:text-xs group-hover:text-xl font-bold absolute bottom-2 right-2 group-hover:static group-hover:mb-2 transition-all duration-300">{project.name}</h3>

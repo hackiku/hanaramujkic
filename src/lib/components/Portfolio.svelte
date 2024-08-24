@@ -1,20 +1,51 @@
 <!-- $lib/components/Portfolio.svelte -->
 
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
   import * as Resizable from '$lib/components/ui/resizable';
   import { Button } from "$lib/components/ui/button";
   import ProjectCard from './ProjectCard.svelte';
 
-  export let projects: Array<{
-    id: string;
-    name: string;
-    company: string;
-    image: string;
-    tags: string[];
-  }> = [];
-  
+  // Fallback data
+  const fallbackProjects = [
+    {
+      id: "1",
+      name: "Fallback Project 1",
+      company: "Dummy Company",
+      tags: ["Fallback", "Design"],
+      color: "bg-gray-500",
+      image: "/placeholder-image.jpg"
+    },
+    {
+      id: "2",
+      name: "Fallback Project 2",
+      company: "Another Dummy",
+      tags: ["Fallback", "Art"],
+      color: "bg-blue-500",
+      image: "/placeholder-image.jpg"
+    },
+    // Add more fallback projects as needed
+  ];
+
+  let projects = [];
+  let isLoading = true;
+  let error = null;
   let visibleProjects = 6;
+
+  onMount(async () => {
+    try {
+      const response = await fetch('/api/projects');
+      if (!response.ok) throw new Error('Failed to fetch projects');
+      projects = await response.json();
+    } catch (err) {
+      console.error('Error loading projects:', err);
+      error = 'Failed to load projects. Using fallback data.';
+      projects = fallbackProjects;
+    } finally {
+      isLoading = false;
+    }
+  });
 
   $: gridItems = projects.slice(0, visibleProjects);
 
@@ -36,6 +67,16 @@
     ]
   };
 </script>
+
+{#if isLoading}
+  <div class="flex justify-center items-center h-64">
+    <p>Loading projects...</p>
+  </div>
+{:else if error}
+  <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
+    <p>{error}</p>
+  </div>
+{/if}
 
 <div class="space-y-4">
   <!-- Mobile layout -->

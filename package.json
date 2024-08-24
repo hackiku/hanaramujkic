@@ -24,8 +24,10 @@
 	"type": "module",
 	"dependencies": {
 		"@uploadthing/svelte": "^6.6.3",
+		"@zerodevx/svelte-toast": "github:zerodevx/svelte-toast",
 		"bits-ui": "^0.21.13",
 		"clsx": "^2.1.1",
+		"contentful": "^10.15.0",
 		"lucide-svelte": "^0.427.0",
 		"mode-watcher": "^0.4.1",
 		"paneforge": "^0.0.5",

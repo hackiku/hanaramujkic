@@ -13,7 +13,7 @@
     { label: 'Work', href: '/' },
     { label: 'CV', href: '/cv' },
     { label: 'Contact', href: '/contact' },
-    { label: 'Admin', href: '/admin' }
+    // { label: 'Admin', href: '/admin' }
   ];
 
   function toggleMenu() {

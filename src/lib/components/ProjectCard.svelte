@@ -1,6 +1,4 @@
 <!-- $lib/components/ProjectCard.svelte -->
-
-<!-- $lib/components/ProjectCard.svelte -->
 <script lang="ts">
   export let project: {
     id: string;

@@ -70,7 +70,7 @@
 
     <!-- Desktop layout -->
     <div class="hidden md:block space-y-4">
-      <Resizable.PaneGroup class="w-full min-h-[600px]">
+      <Resizable.PaneGroup class="w-full min-h-[600px]" direction="horizontal">
         <Resizable.Pane defaultSize={66} minSize={20}>
           {#if gridItems[0]}
             <ProjectCard project={gridItems[0]} />

@@ -26,47 +26,52 @@
   }
 </script>
 
-<Resizable.PaneGroup class="w-full min-h-[600px] rounded-lg border">
-  <Resizable.Pane defaultSize={66} minSize={20}>
+<div class="space-y-8">
+  <div class="w-full md:hidden">
     {#if gridItems[0]}
       <ProjectCard project={gridItems[0]} />
     {/if}
-  </Resizable.Pane>
-  <Resizable.Handle />
-  <Resizable.Pane>
-    <Resizable.PaneGroup direction="vertical">
-      <Resizable.Pane defaultSize={50} minSize={20}>
-        {#if gridItems[1]}
-          <ProjectCard project={gridItems[1]} />
+  </div>
+
+  <div class="hidden md:block">
+    <Resizable.PaneGroup class="w-full min-h-[600px]">
+      <Resizable.Pane defaultSize={66} minSize={20}>
+        {#if gridItems[0]}
+          <ProjectCard project={gridItems[0]} />
         {/if}
       </Resizable.Pane>
-      <Resizable.Handle />
+      <Resizable.Handle class="w-8" />
       <Resizable.Pane>
-        {#if gridItems[2]}
-          <ProjectCard project={gridItems[2]} />
-        {/if}
+        <Resizable.PaneGroup direction="vertical">
+          <Resizable.Pane defaultSize={50} minSize={20}>
+            {#if gridItems[1]}
+              <ProjectCard project={gridItems[1]} />
+            {/if}
+          </Resizable.Pane>
+          <Resizable.Handle class="h-8" />
+          <Resizable.Pane>
+            {#if gridItems[2]}
+              <ProjectCard project={gridItems[2]} />
+            {/if}
+          </Resizable.Pane>
+        </Resizable.PaneGroup>
       </Resizable.Pane>
     </Resizable.PaneGroup>
-  </Resizable.Pane>
-</Resizable.PaneGroup>
-
-{#if gridItems.length > 3}
-  <Resizable.PaneGroup class="w-full min-h-[400px] mt-4 rounded-lg border">
-    {#each gridItems.slice(3) as project, index}
-      <Resizable.Pane minSize={20}>
-        <ProjectCard {project} />
-      </Resizable.Pane>
-      {#if index < gridItems.slice(3).length - 1}
-        <Resizable.Handle />
-      {/if}
-    {/each}
-  </Resizable.PaneGroup>
-{/if}
-
-{#if visibleProjects < projects.length}
-  <div class="mt-8 text-center">
-    <Button on:click={showMore} variant="outline">
-      Load More
-    </Button>
   </div>
-{/if}
+
+  {#if gridItems.length > 1}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {#each gridItems.slice(1) as project, index}
+        <ProjectCard {project} />
+      {/each}
+    </div>
+  {/if}
+
+  {#if visibleProjects < projects.length}
+    <div class="mt-8 text-center">
+      <Button on:click={showMore} variant="outline" class="w-full md:w-auto">
+        Load More
+      </Button>
+    </div>
+  {/if}
+</div>

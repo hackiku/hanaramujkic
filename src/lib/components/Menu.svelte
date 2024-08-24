@@ -53,7 +53,7 @@
         transition:fly="{{ x: '100%', duration: 300, easing: cubicInOut }}"
       >
         <nav class="w-full px-8">
-          <ul class="text-4xl md:text-6xl space-y-8">
+          <ul class="text-3xl md:text-5xl space-y-6 md:space-y-8">
             {#each menuItems as item}
               <li class="w-full">
                 <a

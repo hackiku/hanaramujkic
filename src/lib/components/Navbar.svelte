@@ -1,4 +1,5 @@
 <!-- $lib/components/Navbar.svelte -->
+
 <script lang="ts">
   import { Sun, Moon } from "lucide-svelte";
   import { toggleMode } from "mode-watcher";
@@ -19,8 +20,8 @@
   });
 </script>
 
-<nav class="flex justify-between items-center px-8 md:px-24 py-4">
-  <button class="text-xl font-semibold">HR</button>
+<nav class="flex justify-between items-center px-4 sm:px-8 md:px-16 lg:px-24 py-4">
+  <button class="text-lg sm:text-xl font-semibold">HR</button>
   <div class="flex items-center space-x-2">
     <Button on:click={toggleMode} variant="ghost" size="icon">
       <Sun

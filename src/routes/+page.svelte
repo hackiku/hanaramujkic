@@ -4,13 +4,29 @@
   import { onMount } from 'svelte';
   import Portfolio from "$lib/components/Portfolio.svelte";
   import Navbar from "$lib/components/Navbar.svelte";
+  import type { Project } from '$lib/server/contentful';
 
-  let projects = [];
+  let projects: Project[] = [];
+  let isLoading = true;
+  let error: string | null = null;
 
   onMount(async () => {
-    const response = await fetch('/api/projects');
-    const data = await response.json();
-    projects = data.projects;
+    try {
+      const response = await fetch('/api/portfolio');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      projects = data.projects;
+    } catch (err) {
+      console.error('Error fetching projects:', err);
+      error = err instanceof Error ? err.message : 'An unknown error occurred';
+    } finally {
+      isLoading = false;
+    }
   });
 </script>
 
@@ -19,10 +35,14 @@
 <main class="px-4 sm:px-8 md:px-16 lg:px-24 py-8">
   <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4">SCENOGRAPHY</h1>
   <hr class="border-t-2 border-black dark:border-white w-full mb-8" />
-  {#if projects.length > 0}
+  {#if isLoading}
+    <p>Loading projects...</p>
+  {:else if error}
+    <p class="text-red-500">Error: {error}</p>
+  {:else if projects.length > 0}
     <Portfolio {projects} />
   {:else}
-    <p>Loading projects...</p>
+    <p>No projects found.</p>
   {/if}
 </main>
 

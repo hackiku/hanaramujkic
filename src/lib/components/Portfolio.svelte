@@ -2,56 +2,71 @@
 
 <script lang="ts">
   import { fade } from 'svelte/transition';
+  import * as Resizable from '$lib/components/ui/resizable';
+  import { Button } from "$lib/components/ui/button";
+  import ProjectCard from './ProjectCard.svelte';
 
-  export let projects = [];
-  let visibleProjects = 8;
+  export let projects: Array<{
+    id: string;
+    name: string;
+    company: string;
+    image: string;
+    tags: string[];
+  }> = [];
+  
+  let visibleProjects = 6;
 
   $: gridItems = projects.slice(0, visibleProjects);
 
   function showMore() {
-    visibleProjects += 8;
+    visibleProjects += 6;
     if (visibleProjects > projects.length) {
       visibleProjects = projects.length;
     }
   }
-
-  function handleImageError(event: Event) {
-    const img = event.target as HTMLImageElement;
-    img.style.display = 'none';
-    img.nextElementSibling.classList.remove('hidden');
-  }
 </script>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-  {#each gridItems as project (project.id)}
-    <div class="relative overflow-hidden rounded-lg shadow-md group" transition:fade>
-      <img
-        src={project.image}
-        alt={project.name}
-        class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
-        on:error={handleImageError}
-      />
-      <div class="hidden bg-gray-500 w-full h-full absolute inset-0"></div>
-      <div class="absolute inset-0 flex flex-col justify-end p-4 bg-black bg-opacity-0 group-hover:bg-opacity-75 transition-all duration-300">
-        <h3 class="text-white text-xl font-bold transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">{project.name}</h3>
-        <p class="text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 delay-75">{project.company}</p>
-        <div class="flex flex-wrap mt-2 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 delay-100">
-          {#each project.tags as tag}
-            <span class="bg-white text-black text-xs px-2 py-1 rounded-full mr-2 mb-2">{tag}</span>
-          {/each}
-        </div>
-      </div>
-    </div>
-  {/each}
-</div>
+<Resizable.PaneGroup class="w-full min-h-[600px] rounded-lg border">
+  <Resizable.Pane defaultSize={66} minSize={20}>
+    {#if gridItems[0]}
+      <ProjectCard project={gridItems[0]} />
+    {/if}
+  </Resizable.Pane>
+  <Resizable.Handle />
+  <Resizable.Pane>
+    <Resizable.PaneGroup direction="vertical">
+      <Resizable.Pane defaultSize={50} minSize={20}>
+        {#if gridItems[1]}
+          <ProjectCard project={gridItems[1]} />
+        {/if}
+      </Resizable.Pane>
+      <Resizable.Handle />
+      <Resizable.Pane>
+        {#if gridItems[2]}
+          <ProjectCard project={gridItems[2]} />
+        {/if}
+      </Resizable.Pane>
+    </Resizable.PaneGroup>
+  </Resizable.Pane>
+</Resizable.PaneGroup>
+
+{#if gridItems.length > 3}
+  <Resizable.PaneGroup class="w-full min-h-[400px] mt-4 rounded-lg border">
+    {#each gridItems.slice(3) as project, index}
+      <Resizable.Pane minSize={20}>
+        <ProjectCard {project} />
+      </Resizable.Pane>
+      {#if index < gridItems.slice(3).length - 1}
+        <Resizable.Handle />
+      {/if}
+    {/each}
+  </Resizable.PaneGroup>
+{/if}
 
 {#if visibleProjects < projects.length}
   <div class="mt-8 text-center">
-    <button
-      on:click={showMore}
-      class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors duration-300"
-    >
-      Show More
-    </button>
+    <Button on:click={showMore} variant="outline">
+      Load More
+    </Button>
   </div>
 {/if}

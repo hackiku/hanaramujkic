@@ -3,11 +3,9 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { Button } from "$lib/components/ui/button";
-  import { Input } from "$lib/components/ui/input";
-  import { Label } from "$lib/components/ui/label";
-  import { Textarea } from "$lib/components/ui/textarea";
-
-  let projectData = {
+  
+  let projects = [];
+  let newProject = {
     name: '',
     company: '',
     tags: '',
@@ -15,31 +13,24 @@
     image: null as File | null
   };
 
-  let imagePreview: string | null = null;
-  let projects = [];
-
   onMount(async () => {
+    await fetchProjects();
+  });
+
+  async function fetchProjects() {
     const response = await fetch('/api/projects');
     const data = await response.json();
     projects = data.projects;
-  });
-
-  function handleImageUpload(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      projectData.image = input.files[0];
-      imagePreview = URL.createObjectURL(input.files[0]);
-    }
   }
 
   async function handleSubmit() {
     const formData = new FormData();
-    formData.append('name', projectData.name);
-    formData.append('company', projectData.company);
-    formData.append('tags', projectData.tags);
-    formData.append('color', projectData.color);
-    if (projectData.image) {
-      formData.append('image', projectData.image);
+    formData.append('name', newProject.name);
+    formData.append('company', newProject.company);
+    formData.append('tags', newProject.tags);
+    formData.append('color', newProject.color);
+    if (newProject.image) {
+      formData.append('image', newProject.image);
     }
 
     const response = await fetch('/api/projects', {
@@ -48,68 +39,63 @@
     });
 
     if (response.ok) {
-      const result = await response.json();
-      projects = [...projects, result.project];
-      // Reset form after successful submission
-      projectData = { name: '', company: '', tags: '', color: '', image: null };
-      imagePreview = null;
+      await fetchProjects();
+      newProject = { name: '', company: '', tags: '', color: '', image: null };
     } else {
-      console.error('Failed to save project');
+      console.error('Failed to add project');
+    }
+  }
+
+  function handleFileChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    if (target.files) {
+      newProject.image = target.files[0];
     }
   }
 </script>
 
-
 <div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold mb-8">Add New Project</h1>
-  
-  <div class="flex flex-col md:flex-row gap-8">
-    <div class="w-full md:w-1/2">
-      <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-        {#if imagePreview}
-          <img src={imagePreview} alt="Project preview" class="max-w-full h-auto mb-4" />
-        {:else}
-          <p class="text-gray-500 mb-4">No image uploaded</p>
-        {/if}
-        <Label for="image-upload" class="cursor-pointer">
-          <Input 
-            id="image-upload" 
-            type="file" 
-            accept="image/*" 
-            on:change={handleImageUpload} 
-            class="hidden" 
-          />
-          <span class="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded">
-            {imagePreview ? 'Change Image' : 'Upload Image'}
-          </span>
-        </Label>
+  <h1 class="text-3xl font-bold mb-8">Admin Dashboard</h1>
+
+  <div class="mb-12">
+    <h2 class="text-2xl font-semibold mb-4">Add New Project</h2>
+    <form on:submit|preventDefault={handleSubmit} class="space-y-4">
+      <div>
+        <label for="name" class="block mb-1">Project Name</label>
+        <input id="name" bind:value={newProject.name} placeholder="Project Name" class="w-full p-2 border rounded" required>
       </div>
-    </div>
-    
-    <div class="w-full md:w-1/2">
-      <form on:submit|preventDefault={handleSubmit} class="space-y-4">
-        <div>
-          <Label for="project-name">Project Name</Label>
-          <Input id="project-name" bind:value={projectData.name} required />
-        </div>
-        
-        <div>
-          <Label for="company">Company</Label>
-          <Input id="company" bind:value={projectData.company} required />
-        </div>
-        
-        <div>
-          <Label for="tags">Tags (comma-separated)</Label>
-          <Input id="tags" bind:value={projectData.tags} placeholder="e.g. Stage Design, Lighting" />
-        </div>
-        
-        <div>
-          <Label for="color">Color (Tailwind class)</Label>
-          <Input id="color" bind:value={projectData.color} placeholder="e.g. bg-red-500" />
-        </div>
-        
-        <Button type="submit" class="w-full">Save Project</Button>
-      </form>
-    </div>
+      <div>
+        <label for="company" class="block mb-1">Company</label>
+        <input id="company" bind:value={newProject.company} placeholder="Company" class="w-full p-2 border rounded" required>
+      </div>
+      <div>
+        <label for="tags" class="block mb-1">Tags (comma-separated)</label>
+        <input id="tags" bind:value={newProject.tags} placeholder="Tags (comma-separated)" class="w-full p-2 border rounded" required>
+      </div>
+      <div>
+        <label for="color" class="block mb-1">Color (e.g., bg-blue-500)</label>
+        <input id="color" bind:value={newProject.color} placeholder="Color (e.g., bg-blue-500)" class="w-full p-2 border rounded" required>
+      </div>
+      <div>
+        <label for="image" class="block mb-1">Image</label>
+        <input type="file" id="image" on:change={handleFileChange} accept="image/*" class="w-full p-2 border rounded" required>
+      </div>
+      <Button type="submit" class="w-full">Add Project</Button>
+    </form>
+  </div>
+
+  <div>
+    <h2 class="text-2xl font-semibold mb-4">Current Projects</h2>
+    <ul class="space-y-4">
+      {#each projects as project}
+        <li class="border p-4 rounded">
+          <h3 class="text-xl font-semibold">{project.name}</h3>
+          <p><strong>Company:</strong> {project.company}</p>
+          <p><strong>Tags:</strong> {project.tags.join(', ')}</p>
+          <p><strong>Color:</strong> {project.color}</p>
+          <img src={project.image} alt={project.name} class="mt-2 max-w-full h-auto" />
+        </li>
+      {/each}
+    </ul>
   </div>
 </div>

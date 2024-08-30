@@ -3,7 +3,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import Portfolio from "$lib/components/Portfolio.svelte";
-  import Navbar from "$lib/components/Navbar.svelte";
+  // import Navbar from "$lib/components/Navbar.svelte";
   // import DraggableStickers from "$lib/components/DraggableStickers.svelte";
   import type { Project } from '$lib/server/contentful';
 
@@ -31,7 +31,7 @@
   });
 </script>
 
-<Navbar />
+<!-- <Navbar /> -->
 
 <div class="relative overflow-hidden">
   <div 

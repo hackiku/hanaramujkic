@@ -21,7 +21,7 @@
 </script>
 
 <nav class="flex justify-between items-center px-4 sm:px-8 md:px-16 lg:px-24 py-4">
-  <button class="text-lg sm:text-3xl text-start font-semibold">HANA RAMUJKIC</button>
+  <a class="text-lg sm:text-3xl text-start font-semibold" href="/">HANA RAMUJKIC</a>
   <div class="flex items-center space-x-2">
     <Button on:click={toggleMode} variant="ghost" size="icon">
       <Sun

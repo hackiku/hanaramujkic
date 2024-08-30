@@ -12,18 +12,24 @@ const client = createClient({
 export interface Project {
 	id: string;
 	title: string;
-	company?: string;
 	venue?: string;
+	writer?: string;
+	conductor?: string;
 	director?: string;
+	setDesigner?: string;
+	costumeDesigner?: string;
 	city?: {
 		lat: number;
 		lon: number;
 	};
+	photographer?: string;
 	media: {
 		url: string;
 		title: string;
 	}[];
 	projectDescription: any;
+	spot?: number;
+	tags?: string[];
 }
 
 export async function getProjects(): Promise<Project[]> {
@@ -32,19 +38,35 @@ export async function getProjects(): Promise<Project[]> {
 			content_type: 'project',
 		});
 
-		return response.items.map((item: any) => ({
-			id: item.sys.id,
-			title: item.fields.title,
-			company: item.fields.company,
-			venue: item.fields.venue,
-			director: item.fields.director,
-			city: item.fields.city,
-			media: item.fields.media?.map((media: any) => ({
-				url: `https:${media.fields.file.url}`,
-				title: media.fields.title,
-			})) || [],
-			projectDescription: item.fields.projectDescription,
-		}));
+		return response.items.map((item: any) => {
+			console.log('Processing item:', item.sys.id);
+			return {
+				id: item.sys.id,
+				title: item.fields.title,
+				venue: item.fields.venue,
+				writer: item.fields.writer,
+				conductor: item.fields.conductor,
+				director: item.fields.director,
+				setDesigner: item.fields.setDesigner,
+				costumeDesigner: item.fields.costumeDesigner,
+				city: item.fields.city,
+				photographer: item.fields.photographer,
+				media: item.fields.media?.map((media: any) => {
+					if (media && media.fields && media.fields.file) {
+						return {
+							url: `https:${media.fields.file.url}`,
+							title: media.fields.title || 'Untitled',
+						};
+					} else {
+						console.warn(`Invalid media for project ${item.sys.id}:`, media);
+						return null;
+					}
+				}).filter(Boolean) || [],
+				projectDescription: item.fields.projectDescription,
+				spot: item.fields.spot,
+				tags: item.fields.tags,
+			};
+		});
 	} catch (error) {
 		console.error('Error fetching projects from Contentful:', error);
 		return [];

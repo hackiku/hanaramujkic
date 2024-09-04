@@ -1,7 +1,7 @@
 <!-- $lib/components/Navbar.svelte -->
 
 <script lang="ts">
-  import { Sun, Moon } from "lucide-svelte";
+  import { Sun, Moon, Drama } from "lucide-svelte";
   import { toggleMode } from "mode-watcher";
   import { Button } from "$lib/components/ui/button";
   import Menu from "$lib/components/Menu.svelte";
@@ -21,8 +21,13 @@
 </script>
 
 <nav class="flex justify-between items-center px-4 sm:px-8 md:px-16 lg:px-24 py-4">
-  <a class="text-lg sm:text-3xl text-start font-semibold" href="/">HANA RAMUJKIC</a>
-  <div class="flex items-center space-x-2">
+  
+	<div class="flex items-center justify-center gap-2">
+		<Drama />
+		<a class="text-lg sm:text-2xl text-start font-semibold" href="/">Hana Ramujkic</a>
+	</div>
+  
+	<div class="flex items-center space-x-2">
     <Button on:click={toggleMode} variant="ghost" size="icon">
       <Sun
         class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"

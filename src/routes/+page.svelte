@@ -36,8 +36,8 @@
     <div class="w-full h-full bg-dots dark:bg-dots-dark animate-spin-slow"></div>
   </div>
 
+	<Hero />
   <main class="px-4 sm:px-8 md:px-16 lg:px-24 py-8 relative z-10">
-    <Hero />
 
     <hr class="border-t-2 border-black dark:border-white w-full my-8" />
 
@@ -53,20 +53,24 @@
 
     <hr class="border-t-2 border-black dark:border-white w-full my-8" />
 
-		<!-- routes/+page.svelte (About section only) -->
-		<div class="flex flex-col md:flex-row gap-4 md:gap-10">
-			<div class="w-full md:w-1/3">
-				<img src="hana-ramujkic.jpeg" alt="Hana Ramujkic set designer photo" class="w-full h-auto rounded-lg shadow-lg">
+		<div class="flex flex-col md:flex-row gap-8 md:gap-16">
+			<div class="w-full md:w-1/2 relative">
+				<div class="transform -rotate-6 shadow-xl w-4/5">
+					<img src="hana-ramujkic.jpeg" alt="Hana Ramujkic set designer photo" class="w-full h-auto rounded-lg">
+				</div>
+				<div class="absolute top-1/4 left-1/4 transform rotate-6 shadow-xl z-10 w-3/4">
+					<img src="hana-ramujkic.jpeg" alt="Hana Ramujkic set designer photo" class="w-full h-auto rounded-lg">
+				</div>
 			</div>
-			<div class="w-full md:w-2/3">
+			<div class="w-full md:w-1/2">
 				<h2 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6">ABOUT</h2>
 				<div class="space-y-4">
-					<p>Hana Ramujkić is a talented set and costume designer with a unique background in opera singing. Born in Belgrade in 1995, she combines her passion for literature, music, and visual arts in her theatrical designs. Hana's mission is to make theater relevant and accessible to younger audiences, bringing her intense passion to every production.</p>
-					<p>With a diverse educational background in linguistics, literature, and music, Hana brings a multifaceted approach to her designs. She believes set designers are the magicians of theater, creating visual frameworks that set the tone for entire productions. Her work is characterized by deep storytelling through visual tools and a collaborative spirit, leading her to work with renowned directors across Europe.</p>
+					<p>Hana Ramujkić, born in Belgrade in 1995, is a talented set and costume designer with a unique background in opera singing. She combines her passion for literature, music, and visual arts in her theatrical designs, aiming to make theater relevant and accessible to younger audiences.</p>
+					<p>With a diverse educational background in linguistics, literature, and music, Hana brings a multifaceted approach to her work. She views set designers as the magicians of theater, creating visual frameworks that set the tone for entire productions. Her designs are characterized by deep storytelling through visual tools and a collaborative spirit, leading her to work with renowned directors across Europe.</p>
 				</div>
 			</div>
 		</div>
-  </main>
+	</main>
 </div>
 
 <style>

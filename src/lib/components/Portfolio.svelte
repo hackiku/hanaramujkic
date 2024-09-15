@@ -1,5 +1,4 @@
 <!-- $lib/components/Portfolio.svelte -->
-
 <script lang="ts">
   import { onMount } from 'svelte';
   import * as Resizable from '$lib/components/ui/resizable';

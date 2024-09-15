@@ -5,7 +5,7 @@
 
   export let data: PageData;
 
-  const { project, error } = data;
+  const { project, error, allProjects } = data;
 </script>
 
 <div class="min-h-screen flex flex-col">
@@ -56,5 +56,5 @@
     </div>
   {/if}
   
-  <Footer {data} />
+  <Footer projects={allProjects} />
 </div>

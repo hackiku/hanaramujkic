@@ -1,4 +1,5 @@
 // routes/[slug]/+page.server.ts
+
 import { getProject, getProjects } from '$lib/server/contentful';
 import type { PageServerLoad } from './$types';
 

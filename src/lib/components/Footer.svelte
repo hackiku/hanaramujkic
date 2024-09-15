@@ -4,7 +4,6 @@
 </script>
 
 <footer class="bg-black text-white py-8 sm:py-12 px-4 sm:px-8 md:px-16 lg:px-24">
-
 	
 	<div class="flex flex-col sm:flex-row justify-between space-y-6 sm:space-y-0">
     <div>

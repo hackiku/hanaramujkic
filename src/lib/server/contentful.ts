@@ -11,6 +11,7 @@ const client = createClient({
 
 export interface Project {
 	id: string;
+	slug: string;
 	title: string;
 	venue?: string;
 	writer?: string;
@@ -31,6 +32,46 @@ export interface Project {
 	spot?: number;
 	tags?: string[];
 }
+
+export async function getProject(slug: string): Promise<Project | null> {
+	try {
+		const response = await client.getEntries({
+			content_type: 'project',
+			'fields.slug': slug,
+			limit: 1
+		});
+
+		if (response.items.length === 0) {
+			return null;
+		}
+
+		const item = response.items[0];
+		return {
+			id: item.sys.id,
+			slug: item.fields.slug,
+			title: item.fields.title,
+			venue: item.fields.venue,
+			writer: item.fields.writer,
+			conductor: item.fields.conductor,
+			director: item.fields.director,
+			setDesigner: item.fields.setDesigner,
+			costumeDesigner: item.fields.costumeDesigner,
+			city: item.fields.city,
+			photographer: item.fields.photographer,
+			media: item.fields.media?.map((media: any) => ({
+				url: `https:${media.fields.file.url}`,
+				title: media.fields.title || 'Untitled',
+			})) || [],
+			projectDescription: item.fields.projectDescription,
+			spot: item.fields.spot,
+			tags: item.fields.tags,
+		};
+	} catch (error) {
+		console.error('Error fetching project from Contentful:', error);
+		return null;
+	}
+}
+
 
 export async function getProjects(): Promise<Project[]> {
 	try {

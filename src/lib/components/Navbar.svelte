@@ -1,7 +1,7 @@
 <!-- $lib/components/Navbar.svelte -->
 
 <script lang="ts">
-  import { Sun, Moon, Drama } from "lucide-svelte";
+  import { Sun, Moon, Download } from "lucide-svelte";
   import { toggleMode } from "mode-watcher";
   import { Button } from "$lib/components/ui/button";
   import Menu from "$lib/components/Menu.svelte";
@@ -18,16 +18,29 @@
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     return () => observer.disconnect();
   });
+
+  const navItems = [
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'CV', href: '/cv' },
+    { label: 'Contact', href: '/contact' }
+  ];
 </script>
 
 <nav class="flex justify-between items-center px-4 sm:px-8 md:px-16 lg:px-24 py-4">
+
+	<a class="text-lg sm:text-2xl text-start font-semibold" href="/">
+		Hana Ramujkic
+	</a>
   
-	<div class="flex items-center justify-center gap-2">
-		<Drama />
-		<a class="text-lg sm:text-2xl text-start font-semibold" href="/">Hana Ramujkic</a>
-	</div>
-  
-	<div class="flex items-center space-x-2">
+  <div class="hidden md:flex items-center space-x-4">
+    {#each navItems as item}
+      <a href={item.href} class="text-sm hover:underline">{item.label}</a>
+    {/each}
+    <Button variant="secondary" size="sm" class="flex items-center gap-2">
+      <Download size={16} />
+      Download CV
+    </Button>
     <Button on:click={toggleMode} variant="ghost" size="icon">
       <Sun
         class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
@@ -37,6 +50,9 @@
       />
       <span class="sr-only">Toggle theme</span>
     </Button>
-    <Menu {darkMode} />
+  </div>
+  
+  <div class="md:hidden">
+    <Menu {darkMode} {navItems} />
   </div>
 </nav>

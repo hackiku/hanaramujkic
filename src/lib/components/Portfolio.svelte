@@ -10,7 +10,7 @@
   export let projects: Project[] = [];
   let isLoading = true;
   let error: string | null = null;
-  let visibleProjects = 6;
+  let visibleProjects = 8;
 
   onMount(() => {
     isLoading = false;

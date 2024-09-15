@@ -55,10 +55,7 @@
 
 		<div class="flex flex-col md:flex-row gap-8 md:gap-16">
 			<div class="w-full md:w-1/2 relative">
-				<div class="transform -rotate-6 shadow-xl w-4/5">
-					<img src="hana-ramujkic.jpeg" alt="Hana Ramujkic set designer photo" class="w-full h-auto rounded-lg">
-				</div>
-				<div class="absolute top-1/4 left-1/4 transform rotate-6 shadow-xl z-10 w-3/4">
+				<div class="shadow-xl w-3/5">
 					<img src="hana-ramujkic.jpeg" alt="Hana Ramujkic set designer photo" class="w-full h-auto rounded-lg">
 				</div>
 			</div>

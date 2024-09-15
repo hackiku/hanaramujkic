@@ -1,11 +1,27 @@
 <!-- routes/[slug]/+page.svelte -->
 <script lang="ts">
   import type { PageData } from './$types';
+  import { onMount } from 'svelte';
+  import { fade } from 'svelte/transition';
   import Footer from '$lib/components/Footer.svelte';
 
   export let data: PageData;
 
   const { project, error, allProjects } = data;
+
+  let currentImageIndex = 0;
+
+  function nextImage() {
+    if (project && project.media) {
+      currentImageIndex = (currentImageIndex + 1) % project.media.length;
+    }
+  }
+
+  function prevImage() {
+    if (project && project.media) {
+      currentImageIndex = (currentImageIndex - 1 + project.media.length) % project.media.length;
+    }
+  }
 </script>
 
 <div class="min-h-screen flex flex-col">
@@ -20,11 +36,20 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           {#if project.media && project.media.length > 0}
-            <img 
-              src={project.media[0].url} 
-              alt={project.media[0].title} 
-              class="w-full h-auto rounded-lg shadow-lg mb-4"
-            />
+            <div class="relative">
+              {#key currentImageIndex}
+                <img 
+                  src={project.media[currentImageIndex].url} 
+                  alt={project.media[currentImageIndex].title} 
+                  class="w-full h-auto rounded-lg shadow-lg mb-4"
+                  transition:fade
+                />
+              {/key}
+              {#if project.media.length > 1}
+                <button class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full" on:click={prevImage}>←</button>
+                <button class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full" on:click={nextImage}>→</button>
+              {/if}
+            </div>
           {/if}
           <div class="space-y-2">
             <p><strong>Theater:</strong> {project.venue || 'Not specified'}</p>

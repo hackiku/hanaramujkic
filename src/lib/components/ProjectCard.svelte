@@ -1,11 +1,24 @@
 <!-- $lib/components/ProjectCard.svelte -->
-
-<!-- $lib/components/ProjectCard.svelte -->
 <script lang="ts">
   import { goto } from '$app/navigation';
   import type { Project } from '$lib/server/contentful';
 
   export let project: Project;
+
+  const slugMap = {
+    "Die Riesen vom Berge": "die-riesen-vom-berge",
+    "Kapitän Nemos Bibliothek": "kapitan-nemos-bibliothek",
+    "Dippel. Diagnose Cin 3": "dippel-diagnose-cin-3",
+    "Reigen": "reigen",
+    "Melancholia": "melancholia",
+    "Der Kopf der Ariadne!": "der-kopf-der-ariadne",
+    "Cinderella": "cinderella"
+  };
+
+  function handleClick() {
+    const slug = slugMap[project.title] || project.slug || project.title.toLowerCase().replace(/ /g, '-');
+    goto(`/${slug}`);
+  }
 
   let imageError = false;
 
@@ -13,14 +26,19 @@
     imageError = true;
   }
 
-  function handleClick() {
-    goto(`/${project.slug}`);
-  }
+  // function handleClick() {
+  //   if (project.slug) {
+  //     goto(`/${project.slug}`);
+  //   } else {
+  //     console.error('Project slug is undefined', project);
+  //   }
+  // }
+
+  // function handleClick() {
+  //   goto(`/${project.slug}`);
+  // }
 
   $: featuredImage = project.media[0]?.url || '';
-
-  // Hardcoded tags for now, later we'll pull these from Contentful
-  const tags = ['Costume Design', 'Scenography'];
 </script>
 
 <div 
@@ -56,11 +74,13 @@
           {#if project.director}
             <p class="text-white text-sm">Director: {project.director}</p>
           {/if}
-          <div class="hidden group-hover:flex flex-wrap justify-center gap-2 mt-2">
-            {#each tags as tag}
-              <span class="bg-white/30 text-white px-2 py-1 rounded-full text-sm">{tag}</span>
-            {/each}
-          </div>
+          {#if project.tags && project.tags.length > 0}
+            <div class="hidden group-hover:flex flex-wrap justify-center gap-2 mt-2">
+              {#each project.tags as tag}
+                <span class="bg-white/30 text-white px-2 py-1 rounded-full text-sm">{tag}</span>
+              {/each}
+            </div>
+          {/if}
         </div>
       </div>
     </div>

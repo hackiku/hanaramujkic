@@ -35,6 +35,7 @@ export interface Project {
 
 export async function getProject(slug: string): Promise<Project | null> {
 	try {
+		console.log(`Fetching project with slug: ${slug}`);
 		const response = await client.getEntries({
 			content_type: 'project',
 			'fields.slug': slug,
@@ -42,74 +43,63 @@ export async function getProject(slug: string): Promise<Project | null> {
 		});
 
 		if (response.items.length === 0) {
+			console.log(`No project found with slug: ${slug}`);
 			return null;
 		}
 
 		const item = response.items[0];
-		return {
-			id: item.sys.id,
-			slug: item.fields.slug,
-			title: item.fields.title,
-			venue: item.fields.venue,
-			writer: item.fields.writer,
-			conductor: item.fields.conductor,
-			director: item.fields.director,
-			setDesigner: item.fields.setDesigner,
-			costumeDesigner: item.fields.costumeDesigner,
-			city: item.fields.city,
-			photographer: item.fields.photographer,
-			media: item.fields.media?.map((media: any) => ({
-				url: `https:${media.fields.file.url}`,
-				title: media.fields.title || 'Untitled',
-			})) || [],
-			projectDescription: item.fields.projectDescription,
-			spot: item.fields.spot,
-			tags: item.fields.tags,
-		};
+		console.log(`Found project: ${item.fields.title}`);
+		return mapContentfulItemToProject(item);
 	} catch (error) {
 		console.error('Error fetching project from Contentful:', error);
 		return null;
 	}
 }
 
-
 export async function getProjects(): Promise<Project[]> {
 	try {
+		console.log('Fetching all projects');
 		const response = await client.getEntries({
 			content_type: 'project',
 		});
 
-		return response.items.map((item: any) => {
-			console.log('Processing item:', item.sys.id);
-			return {
-				id: item.sys.id,
-				title: item.fields.title,
-				venue: item.fields.venue,
-				writer: item.fields.writer,
-				conductor: item.fields.conductor,
-				director: item.fields.director,
-				setDesigner: item.fields.setDesigner,
-				costumeDesigner: item.fields.costumeDesigner,
-				city: item.fields.city,
-				photographer: item.fields.photographer,
-				media: item.fields.media?.map((media: any) => {
-					if (media && media.fields && media.fields.file) {
-						return {
-							url: `https:${media.fields.file.url}`,
-							title: media.fields.title || 'Untitled',
-						};
-					} else {
-						console.warn(`Invalid media for project ${item.sys.id}:`, media);
-						return null;
-					}
-				}).filter(Boolean) || [],
-				projectDescription: item.fields.projectDescription,
-				spot: item.fields.spot,
-				tags: item.fields.tags,
-			};
-		});
+		console.log(`Found ${response.items.length} projects`);
+		return response.items.map(mapContentfulItemToProject);
 	} catch (error) {
 		console.error('Error fetching projects from Contentful:', error);
 		return [];
 	}
+}
+
+function mapContentfulItemToProject(item: any): Project {
+	console.log(`Mapping project: ${item.fields.title}`);
+	return {
+		id: item.sys.id,
+		slug: item.fields.slug,
+		title: item.fields.title,
+		venue: item.fields.venue,
+		writer: item.fields.writer,
+		conductor: item.fields.conductor,
+		director: item.fields.director,
+		setDesigner: item.fields.setDesigner,
+		costumeDesigner: item.fields.costumeDesigner,
+		city: item.fields.city,
+		photographer: item.fields.photographer,
+		media: item.fields.media?.map((media: any) => {
+			if (media?.fields?.file) {
+				return {
+					url: `https:${media.fields.file.url}`,
+					title: media.fields.title || 'Untitled',
+				};
+			}
+			return null;
+		}).filter(Boolean) || [],
+		projectDescription: item.fields.projectDescription,
+		spot: item.fields.spot,
+		tags: item.fields.tags,
+	};
+}
+
+export function getProjectRawUrl(slug: string): string {
+	return `https://cdn.contentful.com/spaces/${CONTENTFUL_SPACE_ID}/environments/master/entries?access_token=${CONTENTFUL_ACCESS_TOKEN}&content_type=project&fields.slug=${slug}`;
 }

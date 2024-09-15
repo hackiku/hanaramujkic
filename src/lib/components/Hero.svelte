@@ -6,11 +6,12 @@
   let videoUrl = "die_riesen_vom_berge_trailer.mp4";
 </script>
 
-<div class="relative overflow-hidden h-[60vh] md:h-[75vh] w-full">
+<div class="relative overflow-hidden h-[60vh] md:h-[50vh] w-full">
   <!-- Headline -->
   <div class="absolute top-8 left-0 sm:top-12 z-30 pl-4 sm:pl-8 md:pl-16">
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold mb-2 sm:mb-4 text-stroke">SCENOGRAPHY</h1>
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold mb-2 sm:mb-4 text-stroke">SCENE</h1>
     <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold mb-2 sm:mb-4 ml-8 sm:ml-16 text-stroke">+ COSTUME</h1>
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold mb-2 sm:mb-4 ml-20 sm:ml-44 text-stroke">DESIGN</h1>
   </div>
 
   <!-- Video Wrapper -->

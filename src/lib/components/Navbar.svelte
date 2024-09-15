@@ -20,10 +20,10 @@
   });
 
   const navItems = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'CV', href: '/cv' },
-    { label: 'Contact', href: '/contact' }
+    { label: 'Work', href: '#work' },
+    { label: 'About', href: '#about' },
+    { label: 'CV', href: '#' },
+    { label: 'Contact', href: '#' }
   ];
 </script>
 
@@ -33,13 +33,13 @@
 		Hana Ramujkic
 	</a>
   
-  <div class="hidden md:flex items-center space-x-4">
+  <div class="hidden md:flex items-center space-x-6">
     {#each navItems as item}
-      <a href={item.href} class="text-sm hover:underline">{item.label}</a>
+      <a href={item.href} class="text-lg font-semibold hover:underline">{item.label}</a>
     {/each}
     <Button variant="secondary" size="sm" class="flex items-center gap-2">
       <Download size={16} />
-      Download CV
+      Read CV
     </Button>
     <Button on:click={toggleMode} variant="ghost" size="icon">
       <Sun

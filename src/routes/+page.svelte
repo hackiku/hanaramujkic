@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import Hero from "$lib/components/Hero.svelte";
   import Portfolio from "$lib/components/Portfolio.svelte";
+  import ContactForm from "$lib/components/ContactForm.svelte";
   import type { Project } from '$lib/server/contentful';
 
   let projects: Project[] = [];
@@ -62,6 +63,10 @@
 				</div>
 			</div>
 		</div>
+
+		<section class="my-12">
+			<ContactForm />
+		</section>
 	</main>
 </div>
 

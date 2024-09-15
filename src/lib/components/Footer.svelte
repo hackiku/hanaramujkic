@@ -1,6 +1,7 @@
 <!-- $lib/components/Footer.svelte -->
 <script lang="ts">
   import type { Project } from '$lib/server/contentful';
+	import ContactForm from '$lib/components/ContactForm.svelte';
 
   export let projects: Project[] = [];
 </script>
@@ -22,14 +23,9 @@
         </ul>
       </div>
       <div>
-        <h3 class="text-xl font-bold mb-4">Recent Projects</h3>
-        <ul class="space-y-2">
-          {#each projects.slice(0, 5) as project}
-            <li>
-              <a href="/{project.slug}" class="hover:underline">{project.title}</a>
-            </li>
-          {/each}
-        </ul>
+        <h3 class="text-xl font-bold mb-4">Contact</h3>
+
+			<ContactForm />
       </div>
     </div>
   </div>

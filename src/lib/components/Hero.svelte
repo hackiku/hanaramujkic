@@ -16,9 +16,9 @@
 
   <!-- Video Wrapper -->
   <div class="absolute inset-0 flex items-center justify-end pr-4 sm:pr-8 md:pr-16">
-    <div class="relative w-full max-w-xl aspect-video transform -rotate-3" style="margin-top: calc(10vw + 2rem);">
+    <div class="relative w-full max-w-lg aspect-video transform -rotate-3" style="margin-top: calc(6vw + 1rem);">
       <!-- Video Container -->
-      <div class="absolute inset-0 overflow-hidden rounded-3xl shadow-2xl">
+      <div class="absolute inset-0 overflow-hidden rounded-3xl">
         <!-- Video -->
         <video
           class="w-full h-full object-cover"

@@ -1,32 +1,36 @@
 <!-- $lib/components/Footer.svelte -->
-<script lang="ts">
-  import type { Project } from '$lib/server/contentful';
-	import ContactForm from '$lib/components/ContactForm.svelte';
 
-  export let projects: Project[] = [];
+<script lang="ts">
+	import { Button } from "$lib/components/ui/button";
+	import { Download } from "lucide-svelte";
+	import * as Popover from "$lib/components/ui/popover";
+	import ContactForm from "$lib/components/ContactForm.svelte";
 </script>
 
-<footer class="bg-black text-white py-12 px-4 sm:px-8 md:px-16 lg:px-24">
-  <div class="container mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div>
-        <h2 class="text-2xl font-bold mb-4">HANA RAMUJKIC</h2>
-        <p class="mb-2">Email: hana@hanaramujkic.com</p>
-        <p>Phone: +43 123 456 78</p>
-      </div>
-      <div>
-        <h3 class="text-xl font-bold mb-4">Links</h3>
-        <ul class="space-y-2">
-          <li><a href="/" class="hover:underline">Home</a></li>
-          <li><a href="/cv" class="hover:underline">CV</a></li>
-          <li><a href="/contact" class="hover:underline">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-xl font-bold mb-4">Contact</h3>
+<footer
+	class="flex justify-between items-center px-4 sm:px-8 md:px-16 lg:px-24 py-4"
+>
+	<a class="text-lg sm:text-2xl text-start font-semibold" href="/">
+		© Hana Ramujkic 2024
+	</a>
 
-			<ContactForm />
-      </div>
-    </div>
-  </div>
+	<div class="flex items-center gap-6">
+		<a href="./#work" class="text-lg font-light hover:underline">Work</a>
+		<a href="./#about" class="text-lg font-light hover:underline">About</a>
+		<Popover.Root>
+			<Popover.Trigger asChild let:builder>
+				<Button builders={[builder]} variant="link" class="text-lg font-light hover:underline p-0 h-auto">Contact</Button>
+			</Popover.Trigger>
+			<Popover.Content class="w-80">
+				<ContactForm />
+			</Popover.Content>
+		</Popover.Root>
+	</div>
+	
+	<div class="flex gap-6">
+		<Button variant="secondary" size="sm" class="flex items-center gap-2">
+			<Download size={16} />
+			CV
+		</Button>
+	</div>
 </footer>

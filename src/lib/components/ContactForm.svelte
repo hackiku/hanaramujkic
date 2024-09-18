@@ -2,37 +2,47 @@
 
 <script lang="ts">
   import { Button } from "$lib/components/ui/button";
-  import { Copy } from "lucide-svelte";
+  import { Copy, Mail, Phone } from "lucide-svelte";
+
+  interface ContactFormProps {
+    textSize?: string;
+  }
+
+  export let textSize: ContactFormProps['textSize'] = 'text-sm';
 
   let email = "hanaramujkic1@gmail.com";
-  let phone = "+49 123 123 123";
+  let phone = "+43 677 64 3151 64";
 
   function copyToClipboard(text: string) {
     navigator.clipboard.writeText(text);
-    // You might want to add a toast notification here
+    // TODO: Implement toast notification
+  }
+
+  function getWhatsAppLink(phoneNumber: string) {
+    return `https://wa.me/${phoneNumber.replace(/\s+/g, '')}`;
   }
 </script>
 
-<div class="flex flex-col gap-4 items-center justify-center">
+<div class="flex flex-col gap-2 w-full">
   <div class="flex items-center w-full">
-    <Button variant="ghost" class="flex-grow text-left">
-      <!-- <Mail class="opacity-30 h-12 mr-2" /> -->
-      <div class="text-xl font-semibold hover:underline">
-        {email}
-      </div>
-    </Button>
-    <Button variant="ghost" size="icon" on:click={() => copyToClipboard(email)}>
+    <a href="mailto:{email}" class="flex-grow">
+      <Button variant="ghost" class="w-full justify-start py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800">
+        <Mail class="h-4 w-4 mr-2 opacity-70" />
+        <span class="{textSize} font-medium text-left truncate">{email}</span>
+      </Button>
+    </a>
+    <Button variant="ghost" size="sm" class="ml-1 p-1" on:click={() => copyToClipboard(email)}>
       <Copy class="h-4 w-4" />
     </Button>
   </div>
   <div class="flex items-center w-full">
-    <Button variant="ghost" class="flex-grow text-left">
-      <!-- <Phone class="opacity-30 h-12 mr-2" /> -->
-      <div class="text-xl font-semibold hover:underline">
-        {phone}
-      </div>
-    </Button>
-    <Button variant="ghost" size="icon" on:click={() => copyToClipboard(phone)}>
+    <a href={getWhatsAppLink(phone)} target="_blank" rel="noopener noreferrer" class="flex-grow">
+      <Button variant="ghost" class="w-full justify-start py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800">
+        <Phone class="h-4 w-4 mr-2 opacity-70" />
+        <span class="{textSize} font-medium text-left truncate">{phone}</span>
+      </Button>
+    </a>
+    <Button variant="ghost" size="sm" class="ml-1 p-1" on:click={() => copyToClipboard(phone)}>
       <Copy class="h-4 w-4" />
     </Button>
   </div>

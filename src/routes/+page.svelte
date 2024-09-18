@@ -65,8 +65,8 @@
       </div>
     </section>
 
-    <section class="mb-16">
-      <ContactForm />
+    <section class="mb-16 px-12 sm:px-20 md:px-56">
+      <ContactForm textSize="text-2xl" />
     </section>
   </main>
 </div>

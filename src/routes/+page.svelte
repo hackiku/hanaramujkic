@@ -1,10 +1,10 @@
 <!-- routes/+page.svelte -->
+
 <script lang="ts">
   import { onMount } from 'svelte';
   import Hero from "$lib/components/Hero.svelte";
   import Portfolio from "$lib/components/Portfolio.svelte";
   import ContactForm from "$lib/components/ContactForm.svelte";
-  import Footer from "$lib/components/Footer.svelte";
   import type { Project } from '$lib/server/contentful';
 
   let projects: Project[] = [];

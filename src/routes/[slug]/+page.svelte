@@ -1,4 +1,3 @@
-<!-- routes/[slug]/+page.svelte -->
  
 <!-- routes/[slug]/+page.svelte -->
  

@@ -1,28 +1,72 @@
 <!-- $lib/components/Hero.svelte -->
 
-<div class="relative overflow-hidden w-full h-[80vh] sm:h-[70vh] px-4 sm:px-12 md:px-24 py-8">
-  <!-- Headline -->
-  <div class="absolute top-8 left-4 sm:left-12 md:left-24 z-10">
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold mb-2 sm:mb-4">SCENOGRAPHY</h1>
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold mb-2 sm:mb-4 ml-8 md:ml-12 ">+ COSTUME</h1>
-    <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold mb-2 sm:mb-4 ml-20 md:ml-36">DESIGN</h1>
-  </div>
+<script lang="ts">
+  import { Play } from 'lucide-svelte';
 
-  <!-- Video Wrapper -->
-  <div class="absolute bottom-8 right-4 sm:right-12 md:right-24 w-full max-w-lg aspect-video">
-    <!-- Video Container -->
-    <div class="overflow-hidden rounded-3xl">
-      <!-- Video -->
-      <video
-        class="w-full h-full object-cover"
-        autoplay
-        loop
-        muted
-        playsinline
+  let showPlayer = false;
+
+  function openVideoPlayer() {
+    showPlayer = true;
+  }
+
+  function closeVideoPlayer() {
+    showPlayer = false;
+  }
+</script>
+
+<div class="relative w-full overflow-hidden">
+  <!-- Background Video -->
+  <video
+    class="absolute w-full h-auto object-cover"
+    autoplay
+    loop
+    muted
+    playsinline
+  >
+    <source src="die_riesen_vom_berge_trailer.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Content Overlay -->
+  <div class="relative z-10 md:h-[70vh] flex flex-col items-start p-4 sm:p-8 md:p-16">
+    <!-- Text and Button Container -->
+    <div class="flex items-center">
+      <!-- Text Overlay -->
+      <div class="text-white text-right border-r-2 border-white pr-4 sm:pr-8 md:pr-16 flex flex-col items-end pb-10">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold mb-2 whitespace-nowrap">SCENOGRAPHY</h1>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold mb-2 whitespace-nowrap">+ COSTUME</h1>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-semibold whitespace-nowrap">DESIGN</h1>
+      </div>
+      
+      <!-- Play Button -->
+      <button
+        class="ml-4 sm:ml-8 md:ml-16 bg-white bg-opacity-20 hover:bg-opacity-30 transition-all duration-300 rounded-full p-4 flex-shrink-0"
+        on:click={openVideoPlayer}
       >
-        <source src="die_riesen_vom_berge_trailer.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+        <Play class="w-8 h-8 text-white" />
+      </button>
     </div>
   </div>
+
+  <!-- Video Player Modal -->
+  {#if showPlayer}
+    <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div class="relative w-full max-w-4xl">
+        <button
+          class="absolute top-4 right-4 text-white text-2xl"
+          on:click={closeVideoPlayer}
+        >
+          ×
+        </button>
+        <video
+          class="w-full"
+          controls
+          autoplay
+        >
+          <source src="die_riesen_vom_berge_trailer.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  {/if}
 </div>

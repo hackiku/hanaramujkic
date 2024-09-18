@@ -6,6 +6,11 @@
 	
 </script>
 
+<svelte:head>
+  <title>Hana Ramujkic - Set and Costume Designer</title>
+  <meta name="description" content="Set and costume designer with a background in literature, music, and visual arts. Making theater magically accessible to younger audiences." />
+</svelte:head>
+
 <ModeWatcher />
 
 <Navbar />

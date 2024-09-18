@@ -61,10 +61,19 @@ export async function getProjects(): Promise<Project[]> {
 		console.log('Fetching all projects');
 		const response = await client.getEntries({
 			content_type: 'project',
+			limit: 1000, // Increase this if you have more than 1000 projects
 		});
 
 		console.log(`Found ${response.items.length} projects`);
-		return response.items.map(mapContentfulItemToProject);
+		const projects = response.items.map(mapContentfulItemToProject);
+
+		// Sort projects by spot field
+		return projects.sort((a, b) => {
+			// If spot is undefined, treat it as Infinity (to put it at the end)
+			const spotA = a.spot ?? Infinity;
+			const spotB = b.spot ?? Infinity;
+			return spotA - spotB;
+		});
 	} catch (error) {
 		console.error('Error fetching projects from Contentful:', error);
 		return [];

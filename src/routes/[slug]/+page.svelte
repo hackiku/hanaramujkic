@@ -13,6 +13,16 @@
 
   let currentImageIndex = 0;
 
+  // Define the fields to display and their labels
+  const fieldLabels = {
+    conductor: 'Musical direction',
+    director: 'Directed by',
+    setDesigner: 'Set design',
+    costumeDesigner: 'Costume design',
+    venue: 'Theatre',
+    photographer: 'Photos'
+  };
+
   function updateCurrentImage() {
     const images = document.querySelectorAll('.project-image');
     const windowHeight = window.innerHeight;
@@ -52,32 +62,22 @@
     <!-- Left column for project details -->
     <div class="w-full md:w-1/3 p-8 flex flex-col justify-between overflow-y-auto">
       <div>
-        <h1 class="text-4xl font-bold mb-6">{project.title}</h1>
+        <div class="mb-8">
+          <h1 class="text-4xl font-bold mb-6">{project.title}</h1>
+          {#if project.writer}
+            <h3 class="text-lg opacity-60">{project.writer}</h3>
+          {/if}
+        </div>
+        
         <div class="space-y-4">
-          <p>
-            <span class="text-sm font-light">Musical direction</span><br>
-            <span class="text-lg font-semibold">{project.conductor || 'Not specified'}</span>
-          </p>
-          <p>
-            <span class="text-sm font-light">Directed by</span><br>
-            <span class="text-lg font-semibold">{project.director || 'Not specified'}</span>
-          </p>
-          <p>
-            <span class="text-sm font-light">Set design</span><br>
-            <span class="text-lg font-semibold">{project.setDesigner || 'Not specified'}</span>
-          </p>
-          <p>
-            <span class="text-sm font-light">Costume design</span><br>
-            <span class="text-lg font-semibold">{project.costumeDesigner || 'Not specified'}</span>
-          </p>
-          <p>
-            <span class="text-sm font-light">Theatre</span><br>
-            <span class="text-lg font-semibold">{project.venue || 'Not specified'}</span>
-          </p>
-          <p>
-            <span class="text-sm font-light">Photos</span><br>
-            <span class="text-lg font-semibold">{project.photographer || 'Not specified'}</span>
-          </p>
+          {#each Object.entries(fieldLabels) as [field, label]}
+            {#if project[field]}
+              <p>
+                <span class="text-sm font-light opacity-60">{label}</span><br>
+                <span class="text-lg font-semibold">{project[field]}</span>
+              </p>
+            {/if}
+          {/each}
         </div>
       </div>
       <div class="mb-2 mt-12 md:mb-20 md:mt-4">

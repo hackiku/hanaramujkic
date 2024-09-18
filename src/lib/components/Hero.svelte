@@ -9,7 +9,7 @@
   </div>
 
   <!-- Video Wrapper -->
-  <div class="absolute bottom-8 right-4 sm:right-12 md:right-24 w-full max-w-lg aspect-video transform rotate-6">
+  <div class="absolute bottom-8 right-4 sm:right-12 md:right-24 w-full max-w-lg aspect-video">
     <!-- Video Container -->
     <div class="overflow-hidden rounded-3xl">
       <!-- Video -->

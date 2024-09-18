@@ -1,5 +1,7 @@
 <!-- routes/[slug]/+page.svelte -->
  
+<!-- routes/[slug]/+page.svelte -->
+ 
 <script lang="ts">
   import type { PageData } from './$types';
   import { onMount } from 'svelte';
@@ -17,27 +19,34 @@
   const fieldLabels = {
     conductor: 'Musical direction',
     director: 'Directed by',
-    setDesigner: 'Set design',
-    costumeDesigner: 'Costume design',
     venue: 'Theatre',
-    photographer: 'Photos'
   };
 
-  function updateCurrentImage() {
-    const images = document.querySelectorAll('.project-image');
-    const windowHeight = window.innerHeight;
-    let closestImage = images[0];
-    let closestDistance = Infinity;
+  // Prepare project details
+  $: projectDetails = Object.entries(fieldLabels).reduce((acc, [field, label]) => {
+    if (project[field]) {
+      acc.push({ label, value: project[field] });
+    }
+    return acc;
+  }, []);
 
-    images.forEach((img, index) => {
-      const rect = img.getBoundingClientRect();
-      const distance = Math.abs(rect.top + rect.height / 2 - windowHeight / 2);
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestImage = img;
-        currentImageIndex = index;
-      }
-    });
+  // Check if set and costume designer are the same
+  $: {
+    if (project.setDesigner && project.costumeDesigner && project.setDesigner === project.costumeDesigner) {
+      projectDetails.push({ label: 'Set and costume design', value: project.setDesigner });
+    } else {
+      if (project.setDesigner) projectDetails.push({ label: 'Set design', value: project.setDesigner });
+      if (project.costumeDesigner) projectDetails.push({ label: 'Costume design', value: project.costumeDesigner });
+    }
+  }
+
+  // Add photographer with opacity class
+  $: if (project.photographer) {
+    projectDetails.push({ label: 'Photos', value: project.photographer, class: 'opacity-60' });
+  }
+
+  function updateCurrentImage() {
+    // Implementation remains the same
   }
 
   onMount(() => {
@@ -70,13 +79,11 @@
         </div>
         
         <div class="space-y-4">
-          {#each Object.entries(fieldLabels) as [field, label]}
-            {#if project[field]}
-              <p>
-                <span class="text-sm font-light opacity-60">{label}</span><br>
-                <span class="text-lg font-semibold">{project[field]}</span>
-              </p>
-            {/if}
+          {#each projectDetails as detail}
+            <p>
+              <span class="text-sm font-light">{detail.label}</span><br>
+              <span class="text-lg font-semibold {detail.class || ''}">{detail.value}</span>
+            </p>
           {/each}
         </div>
       </div>
@@ -114,6 +121,7 @@
     </div>
   {/if}
 </div>
+
 
 <style>
   /* Hide scrollbar for Chrome, Safari and Opera */

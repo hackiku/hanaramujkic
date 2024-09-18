@@ -35,7 +35,7 @@
   <Hero />
   <main class="container mx-auto px-4 sm:px-8 md:px-16 lg:px-24 py-8 relative z-10">
     <section id="work" class="mb-16">
-      <hr class="border-t-2 border-black dark:border-white w-full my-8" />
+      <hr class="border-t border-black dark:border-white w-full my-8" />
       {#if isLoading}
         <p>Loading projects...</p>
       {:else if error}

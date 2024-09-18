@@ -64,10 +64,12 @@
               </li>
             {/each}
           </ul>
-          <Button variant="secondary" size="sm" class="mt-6 w-full flex items-center justify-center gap-2">
-            <Download size={16} />
-            Download CV
-          </Button>
+          <a href="./Hana_Ramujkic_Biography_eng2024.pdf" target="_blank" rel="noopener noreferrer">
+            <Button variant="secondary" size="sm" class="mt-6 w-full flex items-center justify-center gap-2">
+              <Download size={16} />
+              Download CV
+            </Button>
+          </a>
         </nav>
       </div>
     </div>

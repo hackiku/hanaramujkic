@@ -1,4 +1,5 @@
 <!-- $lib/components/Navbar.svelte -->
+
 <script lang="ts">
   import { Sun, Moon, Download } from "lucide-svelte";
   import { toggleMode } from "mode-watcher";
@@ -19,6 +20,12 @@
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     return () => observer.disconnect();
   });
+
+  const navItems = [
+    { href: "./#work", label: "Work" },
+    { href: "./#about", label: "About" },
+    { href: "#", label: "Contact", isPopover: true }
+  ];
 </script>
 
 <nav class="flex justify-between items-center px-4 sm:px-8 md:px-16 lg:px-24 py-4">
@@ -27,23 +34,29 @@
   </a>
   
   <div class="hidden md:flex items-center space-x-6">
-    <a href="./#work" class="text-lg font-light hover:underline">Work</a>
-    <a href="./#about" class="text-lg font-light hover:underline">About</a>
-    <Popover.Root>
-      <Popover.Trigger asChild let:builder>
-        <Button builders={[builder]} variant="link" class="text-lg font-light hover:underline p-0">Contact</Button>
-      </Popover.Trigger>
-      <Popover.Content class="w-80">
-        <ContactForm />
-      </Popover.Content>
-    </Popover.Root>
+    {#each navItems as item}
+      {#if item.isPopover}
+        <Popover.Root>
+          <Popover.Trigger asChild let:builder>
+            <Button builders={[builder]} variant="link" class="text-lg font-light hover:underline p-0">{item.label}</Button>
+          </Popover.Trigger>
+          <Popover.Content class="w-80">
+            <ContactForm />
+          </Popover.Content>
+        </Popover.Root>
+      {:else}
+        <a href={item.href} class="text-lg font-light hover:underline">{item.label}</a>
+      {/if}
+    {/each}
   </div>
   
   <div class="flex items-center space-x-2 md:space-x-4">
-    <Button variant="secondary" size="sm" class="flex items-center gap-2">
-      <Download size={16} />
-      CV
-    </Button>
+    <a href="./Hana_Ramujkic_Biography_eng2024.pdf" target="_blank" rel="noopener noreferrer">
+      <Button variant="secondary" size="sm" class="flex items-center gap-2">
+        <Download size={16} />
+        CV
+      </Button>
+    </a>
     <Button on:click={toggleMode} variant="ghost" size="icon" class="h-8 w-8">
       <Sun
         class="h-[1rem] w-[1rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
@@ -54,7 +67,7 @@
       <span class="sr-only">Toggle theme</span>
     </Button>
     <div class="md:hidden">
-      <Menu {darkMode} />
+      <Menu {darkMode} {navItems} />
     </div>
   </div>
 </nav>

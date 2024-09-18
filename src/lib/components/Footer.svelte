@@ -28,9 +28,11 @@
 	</div>
 	
 	<div class="flex gap-6">
-		<Button variant="secondary" size="sm" class="flex items-center gap-2">
-			<Download size={16} />
-			CV
-		</Button>
+		<a href="./Hana_Ramujkic_Biography_eng2024.pdf" target="_blank" rel="noopener noreferrer">
+			<Button variant="secondary" size="sm" class="flex items-center gap-2">
+				<Download size={16} />
+				CV
+			</Button>
+		</a>
 	</div>
 </footer>
